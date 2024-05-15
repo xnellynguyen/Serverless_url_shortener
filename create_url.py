@@ -12,6 +12,12 @@ def generate_short_url(event, context):
 
     #create shortened url
     sha256_hash = hashlib.sha256(original_url.encode()).hexdigest()[:8]  
-    
+
     #store in dynamoDB
+    urls_table.put_item(Item={'shortUrl': sha256_hash, 'originalUrl': original_url})
+
     #return shortened url
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'shortUrl': f'https://{event["headers"]["Host"]}/{sha256_hash}'})
+    }
