@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     short_url = event['pathParameters']['shortUrl']
 
     #retreive original url
-    response = table.get_item(Key={'shortUrl': short_url})
+    response = urls_table.get_item(Key={'shortUrl': short_url})
 
     if 'Item' not in response:
         return {
