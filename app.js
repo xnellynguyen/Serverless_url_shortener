@@ -13,12 +13,19 @@ async function createShortUrl() {
 
     try {
         const response = await fetch(`${apiBaseUrl}/create?url=${encodeURIComponent(longUrl)}`);
-        const data = await response.json();
+        const resultText = await response.text();
+        const data = JSON.parse(resultText);
+        const responseBody = JSON.parse(data.body);
 
         if (response.ok) {
-            responseElement.textContent = `Short URL: ${window.location.origin}/redirect/${data.shortUrl}`;
+            const shortUrl = responseBody.shortUrl;
+            if (shortUrl) {
+                responseElement.textContent = `Short URL: ${window.location.origin}/redirect?url=${shortUrl}`;
+            } else {
+                responseElement.textContent = 'Error: Short URL is undefined.';
+            }
         } else {
-            responseElement.textContent = 'Error creating short URL: ' + (data.error || 'Unknown error');
+            responseElement.textContent = 'Error creating short URL: ' + (data.error || 'Server responded with an error');
         }
     } catch (error) {
         responseElement.textContent = 'Error creating short URL. See console for details.';
@@ -37,12 +44,19 @@ async function redirectToOriginalUrl() {
     }
 
     try {
-        const response = await fetch(`${apiBaseUrl}/redirect/${shortUrl}`, { redirect: 'follow' });
+        const response = await fetch(`${apiBaseUrl}/redirect?url=${encodeURIComponent(shortUrl)}`);
+        const resultText = await response.text();  // Get the response text
+        const data = JSON.parse(resultText); // Parse the text into JSON
+        const responseBody = JSON.parse(data.body);
 
-        if (response.redirected) {
-            window.location.href = response.url;
+        console.log('Extracted data:', responseBody);
+        // Extract the location from the response body
+        const location = responseBody.location;
+        console.log('Extracted location:', location);
+
+        if (response.status === 302 && location) {
+            window.location.href = location;
         } else {
-            const data = await response.json();
             responseElement.textContent = data.error || 'Error redirecting to original URL.';
         }
     } catch (error) {

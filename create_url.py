@@ -3,6 +3,8 @@ import boto3
 import hashlib
 
 def lambda_handler(event, context):
+    print("Received event:", event)  # Log the entire event to see what is received
+    
     # Initialize DynamoDB
     dynamo_db = boto3.resource('dynamodb')
     urls_table = dynamo_db.Table('URLs')

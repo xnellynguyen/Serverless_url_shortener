@@ -6,30 +6,23 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     urls_table = dynamodb.Table('URLs')
 
-    # Get short URL from path with error handling
+    # Get short URL from query string parameter
     try:
-        short_url = event['pathParameters']['shortUrl']
+        short_url = event['queryStringParameters']['url']
     except KeyError:
         return {
             'statusCode': 400,
             'headers': {'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': 'Missing short URL parameter'})
+            'body': json.dumps({'error': 'Missing URL parameter'})
         }
 
     # Retrieve original URL
-    try:
-        response = urls_table.get_item(Key={'shortUrl': short_url})
-        if 'Item' not in response:
-            return {
-                'statusCode': 404,
-                'headers': {'Access-Control-Allow-Origin': '*'},
-                'body': json.dumps({'error': 'Short URL not found'})
-            }
-    except Exception as e:
+    response = urls_table.get_item(Key={'shortUrl': short_url})
+    if 'Item' not in response:
         return {
-            'statusCode': 500,
+            'statusCode': 404,
             'headers': {'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': str(e)})
+            'body': json.dumps({'error': 'Short URL not found'})
         }
 
     original_url = response['Item']['originalUrl']
@@ -38,8 +31,7 @@ def lambda_handler(event, context):
     return {
         'statusCode': 302,
         'headers': {
-            'Location': original_url,
-            'Access-Control-Allow-Origin': '*'  # Optional here as it’s a redirect
+            'Location': original_url
         },
         'body': json.dumps({'message': 'Redirecting...'})
     }
