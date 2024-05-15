@@ -19,5 +19,5 @@ def lambda_handler(event, context):
     #return shortened url
     return {
         'statusCode': 200,
-        'body': json.dumps({'shortUrl': f'https://{event["headers"]["Host"]}/{sha256_hash}'})
+        'body': json.dumps({'shortUrl': sha256_hash})
     }
