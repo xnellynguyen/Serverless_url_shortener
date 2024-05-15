@@ -9,7 +9,9 @@ def generate_short_url(event, context):
 
     #get url from query string
     original_url = event['queryStringParameters']['url']
-    
+
     #create shortened url
+    sha256_hash = hashlib.sha256(original_url.encode()).hexdigest()[:8]  
+    
     #store in dynamoDB
     #return shortened url
