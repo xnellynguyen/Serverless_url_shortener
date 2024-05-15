@@ -2,7 +2,7 @@ import json
 import boto3
 import hashlib
 
-def generate_short_url(event, context):
+def lambda_handler(event, context):
     #initialize dynamoDB
     dynamo_db = boto3.resource('dynamodb')
     urls_table = dynamo_db.Table('URLs')
