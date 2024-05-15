@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+
+    <div>
+        <h2>Shorten an URL</h2>
+        <input type="text" id="longUrl" placeholder="Enter long URL">
+        <button onclick="createShortUrl()">Shorten URL</button>
+        <p id="shortUrlResult"></p>
+    </div>
+
+    <div>
+        <h2>Redirect to Original URL</h2>
+        <input type="text" id="shortUrl" placeholder="Enter short URL hash">
+        <button onclick="redirectToOriginalUrl()">Redirect</button>
+        <p id="redirectResult"></p>
+    </div>
+
+    <!-- JavaScript to use API -->
+    <script src="app.js"></script>
+</body>
+</html>
