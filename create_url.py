@@ -8,6 +8,8 @@ def generate_short_url(event, context):
     urls_table = dynamo_db.Table('URLs')
 
     #get url from query string
+    original_url = event['queryStringParameters']['url']
+    
     #create shortened url
     #store in dynamoDB
     #return shortened url
