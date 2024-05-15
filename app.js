@@ -20,7 +20,7 @@ async function createShortUrl() {
         if (response.ok) {
             const shortUrl = responseBody.shortUrl;
             if (shortUrl) {
-                responseElement.textContent = `Short URL: ${window.location.origin}/redirect?url=${shortUrl}`;
+                responseElement.textContent = `Short URL hash: ${shortUrl}`;
             } else {
                 responseElement.textContent = 'Error: Short URL is undefined.';
             }
