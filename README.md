@@ -30,7 +30,7 @@ The shortened URL hash will be displayed.
 1. **Clone the repository**
    ```
    git clone https://github.com/xnellynguyen/Serverless_url_shortener.git
-   cd url-shortener
+   cd Serverless_url_shortener
    ```
 
 2. **Run locally**
